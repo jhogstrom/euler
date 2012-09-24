@@ -47,20 +47,5 @@
 
             return result;
         }
-
-        private static IEnumerable<int> GetDivisors(int number)
-        {
-            var primeDivisors = new List<int>();                       
-
-            for (int i = 1; i <= number / 2; i++)
-            {
-                if (number % i == 0)
-                {
-                    primeDivisors.Add(i);
-                }
-            }
-
-            return primeDivisors;
-        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace Euler
 {
     using System;
+    using System.Collections.Generic;
 
     public abstract class EulerProblem
     {
@@ -55,6 +56,21 @@
             }
 
             return true;
+        }
+
+        protected static IEnumerable<int> GetDivisors(int number)
+        {
+            var divisors = new List<int>();                       
+
+            for (int i = 1; i <= number / 2; i++)
+            {
+                if (number % i == 0)
+                {
+                    divisors.Add(i);
+                }
+            }
+
+            return divisors;
         }
     }
 }

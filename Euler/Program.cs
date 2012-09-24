@@ -5,8 +5,8 @@ namespace Euler
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
+    using System.IO;
     using System.Linq;
-    using System.Text;
     using System.Windows.Forms;
 
     internal class Program
@@ -14,7 +14,7 @@ namespace Euler
         [STAThread]
         private static void Main(string[] args)
         {
-            EulerProblem p = new Problem21(Printing.On);
+            EulerProblem p = new Problem23(Printing.On);
             Console.WriteLine("Answer: {0}", p.Answer);
             Console.WriteLine("Time: {0}", p.Timing);
             Console.WriteLine("The answer is in the clipboard!");
@@ -23,74 +23,78 @@ namespace Euler
         }
     }
 
-    internal class Problem21 : EulerProblem
+    internal class Problem23 : EulerProblem
     {
-        private List<int> _divisors = new List<int>(10000);
-        private readonly Dictionary<int, int> _divisorSums = new Dictionary<int, int>(10000);
-
-        public Problem21(Printing printing)
+        public Problem23(Printing printing)
             : base(printing)
         {
         }
 
         protected override long GetCalculationResult()
         {
-            const int MaxValue = 10010;
-
+            const int MaxValue = 28123;
+            var abundantSums = new List<int>(1000);
             for (int i = 1; i < MaxValue; i++)
             {
                 var divisors = GetDivisors(i);
-                _divisorSums.Add(i, divisors.Sum());
+                var sum = divisors.Sum();
+                if (sum > i)
+                {
+                    abundantSums.Add(i);
+                }
             }
-            var count = _divisorSums.Count;
 
-            var result = 0;
+            var s = new HashSet<int>();
+            foreach (var t in abundantSums)
+            {
+                foreach (var i in abundantSums)
+                {
+                    s.Add(t + i);
+                }
+            }
 
+            var nonsum = new List<int>();
             for (int i = 1; i < MaxValue; i++)
             {
-                var divisorSum = _divisorSums[i];
-                
-                if (divisorSum > 0 && divisorSum < count)
+                if (!s.Contains(i))
                 {
-                    if (_divisorSums[divisorSum] == i && (_divisorSums[divisorSum] != _divisorSums[i]))
-                    {
-                        result += i;
-                        var s = new StringBuilder();
-                        var divisors = GetDivisors(i).ToList();
-                        divisors.ForEach(n => s.Append(n).Append(" "));
-                        Print("{0}: {1} [{2}]", i, divisors.Sum(), s);
-                    }
+                    
+                    nonsum.Add(i);
                 }
             }
 
-            return result;
+            return nonsum.Sum();
+        }
+    }
+
+    internal class Problem22 : EulerProblem
+    {
+        public Problem22(Printing printing)
+            : base(printing)
+        {
         }
 
-        private static IEnumerable<int> GetDivisors(int number)
+        protected override long GetCalculationResult()
         {
-            var primeDivisors = new List<int>();                       
+            var lines = File.ReadAllText("p22_names.txt").Split(',').Select(s => s.Substring(1, s.Length - 2));
+            //var lines = new List<string> { "A", "AA", "ABC", "JESPER" };
+            lines = lines.OrderBy(s => s).ToList();
+            var values = lines.Select(StringValue);
+            var posValues = values.Select(PositionValue);
+            return posValues.Sum();
 
-            for (int i = 1; i <= number / 2 /*Math.Sqrt(number)*/; i++)
-            {
-                if (number % i == 0 /*&& IsPrime(i)*/)
-                {
-                    primeDivisors.Add(i);
-                }
-            }
-
-            //if (number != 1)
-            //{
-            //    primeDivisors.Add(number);
-            //}
-
-            //var result = Permute(primeDivisors);
-
-            return primeDivisors;
         }
 
-        private static List<int> Permute(List<int> list)
+        private long PositionValue(int value, int i)
         {
-            throw new NotImplementedException();
+            return value * (i + 1);
+        }
+
+        private int StringValue(string s)
+        {
+            System.Text.Encoding ascii = System.Text.Encoding.ASCII;
+            var encodedBytes = ascii.GetBytes(s);
+            return encodedBytes.Sum(c => c - 64);
         }
     }
 

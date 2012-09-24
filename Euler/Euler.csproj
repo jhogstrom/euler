@@ -55,6 +55,7 @@
     <Compile Include="Problem16.cs" />
     <Compile Include="Problem17.cs" />
     <Compile Include="Problem19.cs" />
+    <Compile Include="Problem21.cs" />
     <Compile Include="Problem25.cs" />
     <Compile Include="Problem35.cs" />
     <Compile Include="Problem6.cs" />
@@ -64,6 +65,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueueExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="p22_names.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
