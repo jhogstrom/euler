@@ -14,7 +14,7 @@ namespace Euler
         [STAThread]
         private static void Main(string[] args)
         {
-            EulerProblem p = new Problem15(Printing.On);
+            EulerProblem p = new Problem20(Printing.On);
             Console.WriteLine("Answer: {0}", p.Answer);
             Console.WriteLine("Time: {0}", p.Timing);
             Console.WriteLine("The answer is in the clipboard!");

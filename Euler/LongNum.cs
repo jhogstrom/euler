@@ -18,7 +18,16 @@ namespace Euler
             _number = num.ToList();
         }
 
+        public LongNum(long num) : this(num.ToString())
+        {
+        }
+
         public int DigitSum
+        {
+            get { return _number.Sum(); }
+        }
+
+        public long SumOfDigits
         {
             get { return _number.Sum(); }
         }
@@ -26,6 +35,36 @@ namespace Euler
         internal int Length
         {
             get { return _number.Count(); }
+        }
+
+        public static LongNum Fact(int n)
+        {
+            return n == 1 ? new LongNum(1) : Fact(n - 1).Mul(n);
+        }
+
+        public LongNum Mul(int i)
+        {
+            var result = _number.Select(n => n * i).ToList();
+
+            for (int j = result.Count() - 1; j >= 0; j--)
+            {
+                if (j == 0)
+                {
+                    if (result[j] < 9)
+                    {
+                        break;
+                    }
+
+                    result.Insert(0, 0);
+                    j++;
+                }
+
+                var n = result[j];
+                result[j - 1] += n / 10;
+                result[j] = n % 10;
+            }
+
+            return new LongNum(result);
         }
 
         public LongNum Add(LongNum num)
