@@ -24,35 +24,6 @@ namespace Euler
         }
     }
 
-    internal class Problem99 : EulerProblem
-    {
-        public Problem99(Printing printing)
-            : base(printing)
-        {            
-        }
-
-        protected override long GetCalculationResult()
-        {
-            return File.ReadAllLines("p99_base_exp.txt").ToList().Select((s, pos) => new Record(s, pos + 1)).OrderByDescending(r => r.Value).First().Pos;
-        }
-
-        class Record
-        {
-            public Record(string line, int pos)
-            {
-                Pos = pos;
-                var p = line.Split(',');
-                var num = int.Parse(p[0]);
-                var exp = int.Parse(p[1]);
-                Value = exp * Math.Log(num);
-            }
-
-            public int Pos { get; private set; }
-
-            public double Value { get; private set; }
-        }
-    }
-
     internal class Problem32 : EulerProblem
     {
         public Problem32(Printing printing)
