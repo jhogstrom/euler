@@ -39,35 +39,5 @@
             }
             return highest;
         }
-
-        private IEnumerable<int> Primes(int max)
-        {            
-            var numbers = new List<int>(max);            
-            
-            for (int i = 0; i < max; i++)
-            {
-                numbers.Add(i);
-            }
-
-            numbers[0] = -1;
-            numbers[1] = -1;
-
-            var lastPrime = 2;
-            var lpSquare = lastPrime * lastPrime;
-
-            while (lpSquare < max)
-            {
-                for (var i = lpSquare; i < max; i += lastPrime)
-                {
-                    numbers[i] = -1;
-                }
-
-                lastPrime = numbers.SkipWhile(n => n <= lastPrime).SkipWhile(n => n < 0).First();
-                lpSquare = lastPrime * lastPrime;
-            }
-
-
-            return numbers.Where(n => n != -1);
-        }
     }
 }

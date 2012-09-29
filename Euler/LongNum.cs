@@ -22,6 +22,10 @@ namespace Euler
         {
         }
 
+        public LongNum(LongNum num) : this(num.ToString())
+        {            
+        }
+
         public int DigitSum
         {
             get { return _number.Sum(); }
@@ -40,6 +44,34 @@ namespace Euler
         public static LongNum Fact(int n)
         {
             return n == 1 ? new LongNum(1) : Fact(n - 1).Mul(n);
+        }
+
+        public static long Raise(long n, int exp)
+        {
+            if (exp == 0)
+            {
+                return 1;
+            }
+
+            return n * Raise(n, exp - 1);
+        }
+
+        public LongNum Pow(int n)
+        {
+            var result = new LongNum(this);
+            var start = this.AsLong();
+            for (int i = 1; i < n; i++)
+            {
+                result = result.Mul((int)start);
+            }
+
+            return result;
+        }
+
+        public long AsLong()
+        {
+            var c = _number.Count;
+            return _number.Select((n, i) => n * Raise(10, c - i - 1)).Sum();
         }
 
         public LongNum Mul(int i)
@@ -65,6 +97,27 @@ namespace Euler
             }
 
             return new LongNum(result);
+        }
+
+        public override int GetHashCode()
+        {
+            return _number.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as LongNum;
+            if (other == null)
+            {
+                return false;
+            }
+
+            if (_number.Count != other._number.Count)
+            {
+                return false;
+            }
+
+            return _number.Select((n, i) => n.Equals(other._number[i])).All(b => b);
         }
 
         public LongNum Add(LongNum num)

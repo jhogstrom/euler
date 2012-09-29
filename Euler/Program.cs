@@ -7,6 +7,7 @@ namespace Euler
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
+    using System.Text;
     using System.Windows.Forms;
 
     internal class Program
@@ -14,7 +15,7 @@ namespace Euler
         [STAThread]
         private static void Main(string[] args)
         {
-            EulerProblem p = new Problem50(Printing.On);
+            EulerProblem p = new Problem99(Printing.On);
             Console.WriteLine("Answer: {0}", p.Answer);
             Console.WriteLine("Time: {0}", p.Timing);
             Console.WriteLine("The answer is in the clipboard!");
@@ -23,30 +24,79 @@ namespace Euler
         }
     }
 
-    internal static class LongExtender
+    internal class Problem99 : EulerProblem
     {
-        public static bool IsPalindrome(this long i)
-        {
-            return IsPalindrome(i.ToString());
+        public Problem99(Printing printing)
+            : base(printing)
+        {            
         }
 
-        private static bool IsPalindrome(string s)
+        protected override long GetCalculationResult()
         {
-            var l = s.Length;
-            for (int i = 0; i < l / 2; i++)
+            return File.ReadAllLines("p99_base_exp.txt").ToList().Select((s, pos) => new Record(s, pos + 1)).OrderByDescending(r => r.Value).First().Pos;
+        }
+
+        class Record
+        {
+            public Record(string line, int pos)
             {
-                if (s[i] != s[l - i - 1])
-                {
-                    return false;
-                }
+                Pos = pos;
+                var p = line.Split(',');
+                var num = int.Parse(p[0]);
+                var exp = int.Parse(p[1]);
+                Value = exp * Math.Log(num);
             }
 
-            return true;
+            public int Pos { get; private set; }
+
+            public double Value { get; private set; }
+        }
+    }
+
+    internal class Problem32 : EulerProblem
+    {
+        public Problem32(Printing printing)
+            : base(printing)
+        {            
         }
 
-        public static bool IsPalindrome(this long i, int b)
+        protected override long GetCalculationResult()
         {
-            return IsPalindrome(Convert.ToString(i, b));
+            var p = Permute("ABC");
+            foreach (var s in p)
+            {
+                Print("{0}", s);
+            }
+
+            return 0;
+        }
+
+        private IEnumerable<string> Permute(string s)
+        {
+            if (s.Length == 1)
+            {
+                return new[] { s };
+            }
+
+            var c = s[0];
+            var result = new List<string>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                foreach (var permutation in Permute(s.Substring(1)))
+                {
+                    var sb = new StringBuilder(s.Length);
+                    sb.Append(permutation.Substring(i, 1));
+                    sb.Append(c);
+                    if (i < permutation.Length - 1)
+                    {
+                        sb.Append(permutation.Substring(i + 1));
+                    }
+
+                    result.Add(sb.ToString());
+                }                
+            }
+
+            return result;
         }
     }
 
