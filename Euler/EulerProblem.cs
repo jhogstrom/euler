@@ -26,6 +26,14 @@
             Answer = GetCalculationResult();
         }
 
+        protected int StringValue(string s)
+        {
+            System.Text.Encoding ascii = System.Text.Encoding.ASCII;
+            var encodedBytes = ascii.GetBytes(s);
+            return encodedBytes.Sum(c => c - 64);
+        }
+
+
         protected abstract long GetCalculationResult();
 
         protected void Print(string s, params object[] parameters)
