@@ -4,6 +4,8 @@ using System.Text;
 
 namespace Euler
 {
+    using System;
+
     public class LongNum
     {
         private readonly List<int> _number;
@@ -156,6 +158,14 @@ namespace Euler
             var sb = new StringBuilder();
             _number.ForEach(i => sb.Append(i));
             return sb.ToString();
+        }
+
+        public string Last(int i)
+        {
+            var r = _number.Skip(Length - i).ToList();
+            var sb = new StringBuilder(i);
+            r.ForEach(d => sb.Append(d));
+            return sb.ToString();            
         }
     }
 }

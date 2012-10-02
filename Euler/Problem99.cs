@@ -1,6 +1,8 @@
 ﻿namespace Euler
 {
     using System;
+    using System.IO;
+    using System.Linq;
 
     using Enumerable = System.Linq.Enumerable;
 
@@ -13,7 +15,12 @@
 
         protected override long GetCalculationResult()
         {
-            return Enumerable.First<Record>(File.ReadAllLines("p99_base_exp.txt").Select((s, pos) => new Record(s, pos + 1)).OrderByDescending(r => r.Value)).Pos;
+            return File
+                .ReadAllLines("p99_base_exp.txt")
+                .Select((s, pos) => new Record(s, pos + 1))
+                .OrderByDescending(r => r.Value)
+                .First()
+                .Pos;
         }
 
         class Record

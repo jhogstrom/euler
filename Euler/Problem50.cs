@@ -37,6 +37,7 @@
 
                 start++;
             }
+
             return highest;
         }
     }
