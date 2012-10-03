@@ -1,10 +1,9 @@
-﻿namespace Euler
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace Euler
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Enumerable = System.Linq.Enumerable;
-
     internal class Problem42 : EulerProblem
     {
         public Problem42(Printing printing)
@@ -14,7 +13,7 @@
 
         protected override long GetCalculationResult()
         {
-            var words = Enumerable.Select<string, int>(File.ReadAllText("p42_words.txt").Split(',').Select(s => s.Substring(1, s.Length - 2)), StringValue);
+            var words = File.ReadAllText("p42_words.txt").Split(',').Select(s => s.Substring(1, s.Length - 2)).Select(StringValue);
             var max = words.Max();
 
             var triangles = new List<int> { 1 };

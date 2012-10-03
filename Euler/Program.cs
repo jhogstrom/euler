@@ -15,7 +15,7 @@ namespace Euler
         [STAThread]
         private static void Main(string[] args)
         {
-            EulerProblem p = new Problem42(Printing.On);
+            EulerProblem p = new Problem22(Printing.On);
             Console.WriteLine("Answer: {0}", p.Answer);
             Console.WriteLine("Time: {0}", p.Timing);
             Console.WriteLine("The answer is in the clipboard!");
@@ -208,7 +208,11 @@ namespace Euler
             lines = lines.OrderBy(s => s).ToList();
             var values = lines.Select(StringValue);
             var posValues = values.Select(PositionValue);
-            return posValues.Sum();
+            Print("871207122 is WRONG!");
+            var r = 0.0;
+            posValues.ToList().ForEach(n => r += n);
+            Print("{0}", r);
+            return 0;// posValues.Sum();
         }
 
         private long PositionValue(int value, int i)
